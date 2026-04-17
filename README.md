@@ -1,125 +1,51 @@
-# 🚀 DeskPilot - AI Powered Workplace Assistant
+# DeskPilot — Your AI Workplace Sidekick
 
-**DeskPilot** is an AI-powered workplace assistant designed to streamline daily professional tasks and enhance productivity. Built using **Django REST Framework (backend)** and **React.js (frontend)**, it combines intelligent chat, task automation, and third-party integrations into a unified platform.
-
----
-
-## ✨ Key Features
-
-### 🤖 AI Chat Assistant
-
-* Interacts with users using natural language
-* Detects intent and converts it into structured actions (reminders, emails, summaries)
-* Provides a seamless conversational experience
+I built DeskPilot because jumping between five different apps just to stay on top of a workday gets exhausting fast. It's an AI-powered assistant that handles the repetitive stuff — reminders, emails, quick summaries — so you can focus on work that actually matters. The backend runs on Django REST Framework, the frontend on React.js, and everything connects through a clean REST API.
 
 ---
 
-### ⏰ Smart Reminders with Google Calendar Integration
+## What It Can Do
 
-* Create reminders using natural language (e.g., *“Remind me to call John at 6 PM”*)
-* Automatically syncs events with Google Calendar via API
-* Prevents scheduling in the past using robust time parsing logic
+### Talk to It Like a Person
+The chat interface understands plain English. No commands to memorize — just say what you need, and DeskPilot figures out the intent and acts on it. Set a reminder, draft an email, summarize a thread — it handles it conversationally.
 
----
+### Reminders That Actually Work
+Say something like "Remind me to follow up with the client at 3 PM tomorrow" and DeskPilot takes care of it, including syncing to Google Calendar automatically. Getting the time parsing bulletproof took some effort, but it now reliably handles tricky cases like accidental past-date scheduling.
 
-### 📧 Email Integration
+### Gmail Without Switching Tabs
+Pull in recent emails, get a quick summary of what's waiting in your inbox, or send a reply — all from inside the assistant. Authentication uses Google OAuth2, so your credentials stay secure.
 
-* Summarizes recent Gmail messages
-* Allows sending emails directly through the assistant
-* Secure authentication using Google OAuth2
+### Instant Summaries
+Paste a long document, email thread, or meeting note and DeskPilot turns it into something actually readable. Powered by OpenAI's models — genuinely useful for staying on top of heavy inboxes.
 
----
-
-### 📝 AI-Powered Summarization
-
-* Generates concise summaries for long texts and emails
-* Helps users quickly understand complex information
-* Powered by advanced OpenAI models
+### Secure by Design
+Sessions use JWT tokens. Google integrations go through OAuth2. Nothing gets stored unnecessarily.
 
 ---
 
-### 🔐 Authentication & User Management
+## Tech Stack
 
-* JWT-based authentication for secure sessions
-* Google OAuth2 integration for Gmail & Calendar access
-
----
-
-### 🖥️ Frontend Dashboard
-
-* Built with React.js for a modern and responsive UI
-* Includes:
-
-  * Chat interface
-  * Reminders page
-  * Calendar connection module
-  * Navigation dashboard
+- Frontend: React.js
+- Backend: Django REST Framework
+- Database: PostgreSQL (production) / SQLite (local dev)
+- Integrations: Google Calendar API, Gmail API, OpenAI GPT
+- Auth: JWT + Google OAuth2
 
 ---
 
-## 🛠️ Tech Stack
+## Real Problems I Hit (and Fixed)
 
-### Frontend
+**Google OAuth kept rejecting connections** — Google flags OAuth over plain HTTP as insecure. Switched to HTTPS and that resolved it immediately.
 
-* React.js
+**Reminders landing in the past** — the natural language parser was misreading certain relative time expressions. Built a custom parse_datetime_safely() function that validates the result before saving, ensuring reminders always land in the future.
 
-### Backend
-
-* Django REST Framework
-
-### Database
-
-* PostgreSQL / SQLite
-
-### APIs & Integrations
-
-* Google Calendar API
-* Gmail API
-* OpenAI GPT API
-
-### Authentication
-
-* JWT + Google OAuth2
+**Permissions not sticking after login** — API calls were failing even after a successful OAuth handshake. Fixed by forcing re-verification with the correct permission scopes declared explicitly from the start.
 
 ---
 
-## 🚀 Impact
+## What's Next
 
-DeskPilot acts as a **personal AI-powered workplace assistant**, helping users:
-
-* Automate reminders and scheduling
-* Manage emails efficiently
-* Summarize lengthy content instantly
-* Interact with systems using natural language
-
-It significantly reduces manual effort and improves productivity by centralizing essential workplace tools into one platform.
-
----
-
-## ⚡ Challenges Faced
-
-* **Google OAuth2 Integration**
-
-  * Faced rejection due to insecure HTTP
-  * Resolved by enabling HTTPS for secure authentication
-
-* **Date & Time Parsing for Reminders**
-
-  * Incorrect past date scheduling issues
-  * Implemented a custom `parse_datetime_safely()` function to ensure accurate future scheduling
-
-* **API Permission Issues**
-
-  * Encountered insufficient permissions even after authentication
-  * Solved using user re-verification and proper scope handling
-
----
-
-## 📌 Future Enhancements
-
-* Advanced task automation workflows
-* Multi-language support
-* Improved NLP intent detection
-* Integration with additional workplace tools (Slack, Notion, etc.)
-
----
+- Smarter task automation workflows
+- Multi-language support
+- Better NLP for intent detection
+- Integrations with tools like Slack and Notion
